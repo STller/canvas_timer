@@ -26,6 +26,7 @@ window.onload = function () {
   WINDOW_WIDTH = window.innerWidth
   WINDOW_HEIGHT = window.innerHeight
 
+  // 调整上下左右的距离
   MARGIN_LEFT = Math.round(WINDOW_WIDTH / 10)
   RADIUS = Math.round(WINDOW_WIDTH * 4 / 5 / 108) - 1
   MARGIN_TOP = Math.round(WINDOW_HEIGHT / 5)
@@ -58,8 +59,8 @@ window.onload = function () {
       ctx.fillStyle = 'rgb(0, 102, 153)'
       for (let i = 0; i < digit[num].length; i++) {
         for (let j = 0; j < digit[num][i].length; j++) {
-          if(digit[num][i][j] === 1) {
-            console.log('run')
+          if (digit[num][i][j] === 1) {
+            // 画一个小球
             ctx.beginPath()
             ctx.arc(x + j * 2 * (RADIUS + 1) + (RADIUS + 1), y + i * 2 * (RADIUS + 1) + (RADIUS + 1), RADIUS, 0, Math.PI * 2)
             ctx.closePath()
@@ -69,7 +70,6 @@ window.onload = function () {
       }
     }
 
-    // 画一个小球
     render() {
       // 刷新矩形内部
       ctx.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
@@ -83,9 +83,9 @@ window.onload = function () {
       this.renderDigit(MARGIN_LEFT, MARGIN_TOP, parseInt(hours / 10))
       this.renderDigit(MARGIN_LEFT + 15 * (RADIUS + 1), MARGIN_TOP, parseInt(hours % 10))
       this.renderDigit(MARGIN_LEFT + 30 * (RADIUS + 1), MARGIN_TOP, 10)
-      this.renderDigit(MARGIN_LEFT + 39 * (RADIUS + 1), MARGIN_TOP,parseInt(minutes / 10))
+      this.renderDigit(MARGIN_LEFT + 39 * (RADIUS + 1), MARGIN_TOP, parseInt(minutes / 10))
       this.renderDigit(MARGIN_LEFT + 54 * (RADIUS + 1), MARGIN_TOP, parseInt(minutes % 10))
-      this.renderDigit(MARGIN_LEFT + 69 * (RADIUS + 1), MARGIN_TOP, 10, )
+      this.renderDigit(MARGIN_LEFT + 69 * (RADIUS + 1), MARGIN_TOP, 10,)
       this.renderDigit(MARGIN_LEFT + 78 * (RADIUS + 1), MARGIN_TOP, parseInt(seconds / 10))
       this.renderDigit(MARGIN_LEFT + 93 * (RADIUS + 1), MARGIN_TOP, parseInt(seconds % 10))
 
@@ -99,9 +99,21 @@ window.onload = function () {
         ctx.fill()
       }
     }
+
+    update() {
+      this.hours = parseInt((new Date()).getHours())
+      this.minutes = parseInt((new Date()).getMinutes())
+      this.seconds = parseInt((new Date()).getSeconds())
+    }
+
+    run() {
+      this.render()
+      this.update()
+      window.requestAnimationFrame(this.run.bind(this))
+    }
   }
 
   let a = new Balls()
-  a.render()
+  a.run()
 
 }
